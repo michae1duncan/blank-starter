@@ -26,6 +26,8 @@ var _initExtent; // set this in init() if desired; otherwise, it will
 
 var _isMobile = isMobile();
 
+var _isEmbed = false;
+
 dojo.addOnLoad(function() {_dojoReady = true;init()});
 jQuery(document).ready(function() {_jqueryReady = true;init()});
 
@@ -33,6 +35,23 @@ function init() {
 	
 	if (!_jqueryReady) return;
 	if (!_dojoReady) return;
+	
+	// determine whether we're in embed mode
+	
+	var queryString = esri.urlToObject(document.location.href).query;
+	if (queryString) {
+		if (queryString.embed) {
+			if (queryString.embed.toUpperCase() == "TRUE") {
+				_isEmbed = true;
+				$("#header").height(0);
+				$("#zoomToggle").css("top", "55px");
+				$("body").css("min-width","600px");
+				$("body").css("min-height","500px");			
+				$("body").width(600);
+				$("body").height(400);
+			}
+		}
+	}
 	
 	// jQuery event assignment
 	
@@ -78,8 +97,19 @@ function init() {
 }
 
 function initMap() {
-	if (!_initExtent) _initExtent = _map.extent;
-	handleWindowResize();	
+
+	if (!_initExtent) {
+		_initExtent = _map.extent;
+	} else {
+		if (_isEmbed) {
+			setTimeout(function(){
+				_map.setExtent(_initExtent)
+			},500);
+		}	
+	}
+	
+	handleWindowResize();
+	
 }
 
 function handleWindowResize() {
