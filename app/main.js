@@ -21,13 +21,13 @@ var _map;
 var _dojoReady = false;
 var _jqueryReady = false;
 
-var _initExtent;
+var _initExtent; // set this in init() if desired; otherwise, it will 
+				 // be the default extent of the web map;
 
 var _isMobile = isMobile();
 
 dojo.addOnLoad(function() {_dojoReady = true;init()});
 jQuery(document).ready(function() {_jqueryReady = true;init()});
-
 
 function init() {
 	
@@ -65,9 +65,6 @@ function init() {
 
 		_map = response.map;
 
-		//resize the map when the browser resizes
-		dojo.connect(dijit.byId('map'), 'resize', _map, _map.resize);
-		
 		if(_map.loaded){
 			initMap();
 		} else {
@@ -88,5 +85,5 @@ function initMap() {
 function handleWindowResize() {
 	$("#map").height($("body").height() - $("#header").height());
 	$("#map").width($("body").width());
-	console.log($("body").width(), $("body").height(), $("#header").height(), $("#map").width(), $("#map").height());
+	_map.resize();
 }
