@@ -21,7 +21,7 @@ var _map;
 var _dojoReady = false;
 var _jqueryReady = false;
 
-var _initExtent; // set this in init() if desired; otherwise, it will 
+var _homeExtent; // set this in init() if desired; otherwise, it will 
 				 // be the default extent of the web map;
 
 var _isMobile = isMobile();
@@ -64,7 +64,7 @@ function init() {
         _map.setLevel(_map.getLevel()-1);
     });
 	$("#zoomExtent").click(function(e) {
-        _map.setExtent(_initExtent);
+        _map.setExtent(_homeExtent);
     });
 	
 	$("#title").append(TITLE);
@@ -74,7 +74,7 @@ function init() {
 		mapOptions: {
 			slider: false,
 			wrapAround180: true,
-			extent:_initExtent
+			extent:_homeExtent
 		},
 		ignorePopups: false,
 		geometryServiceURL: GEOMETRY_SERVICE_URL
@@ -98,12 +98,12 @@ function init() {
 
 function initMap() {
 
-	if (!_initExtent) {
-		_initExtent = _map.extent;
+	if (!_homeExtent) {
+		_homeExtent = _map.extent;
 	} else {
 		if (_isEmbed) {
 			setTimeout(function(){
-				_map.setExtent(_initExtent)
+				_map.setExtent(_homeExtent)
 			},500);
 		}	
 	}
