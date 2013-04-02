@@ -97,6 +97,11 @@ function init() {
 }
 
 function initMap() {
+	
+	// if _homeExtent hasn't been set, then default to the initial extent
+	// of the web map.  On the other hand, if it HAS been set AND we're using
+	// the embed option, we need to reset the extent (because the map dimensions
+	// have been changed on the fly).
 
 	if (!_homeExtent) {
 		_homeExtent = _map.extent;
