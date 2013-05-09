@@ -43,12 +43,6 @@ function init() {
 		if (queryString.embed) {
 			if (queryString.embed.toUpperCase() == "TRUE") {
 				_isEmbed = true;
-				$("#header").height(0);
-				$("#zoomToggle").css("top", "55px");
-				$("body").css("min-width","600px");
-				$("body").css("min-height","500px");			
-				$("body").width(600);
-				$("body").height(400);
 			}
 		}
 	}
@@ -118,6 +112,9 @@ function initMap() {
 }
 
 function handleWindowResize() {
+	if ((($("body").height() <= 500) || ($("body").width() <= 800)) || _isEmbed) $("#header").height(0);
+	else $("#header").height(115);
+	
 	$("#map").height($("body").height() - $("#header").height());
 	$("#map").width($("body").width());
 	_map.resize();
