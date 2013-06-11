@@ -108,6 +108,7 @@ function initMap() {
 	}
 	
 	handleWindowResize();
+	$("#whiteOut").fadeOut();
 	
 }
 
