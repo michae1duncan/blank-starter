@@ -28,6 +28,17 @@ var _isMobile = isMobile();
 
 var _isEmbed = false;
 
+/*
+
+might need this if you're using icons.
+
+var _lutBallIconSpecs = {
+	tiny:new IconSpecs(24,24,12,12),
+	medium:new IconSpecs(30,30,15,15),
+	large:new IconSpecs(30,30,15,15)
+}
+*/
+
 dojo.addOnLoad(function() {_dojoReady = true;init()});
 jQuery(document).ready(function() {_jqueryReady = true;init()});
 
@@ -107,10 +118,94 @@ function initMap() {
 		}	
 	}
 	
+	/*
+	
+	use this for layer interactivity
+	
+	dojo.connect(_layerOV, "onMouseOver", layerOV_onMouseOver);
+	dojo.connect(_layerOV, "onMouseOut", layerOV_onMouseOut);
+	dojo.connect(_layerOV, "onClick", layerOV_onClick);		
+	*/
+	
 	handleWindowResize();
 	$("#whiteOut").fadeOut();
 	
 }
+
+/*
+
+sample layer event code.
+
+function layerOV_onMouseOver(event) 
+{
+	if (_isMobile) return;
+	var graphic = event.graphic;
+	_map.setMapCursor("pointer");
+	if ($.inArray(graphic, _selected) == -1) {
+		graphic.setSymbol(resizeSymbol(graphic.symbol, _lutBallIconSpecs.medium));
+	}
+	if (!_isIE) moveGraphicToFront(graphic);	
+	$("#hoverInfo").html("<b>"+graphic.attributes.getLanguage()+"</b>"+"<p>"+graphic.attributes.getRegion());
+	var pt = _map.toScreen(graphic.geometry);
+	hoverInfoPos(pt.x,pt.y);	
+}
+
+
+function layerOV_onMouseOut(event) 
+{
+	var graphic = event.graphic;
+	_map.setMapCursor("default");
+	$("#hoverInfo").hide();
+	if ($.inArray(graphic, _selected) == -1) {
+		graphic.setSymbol(resizeSymbol(graphic.symbol, _lutBallIconSpecs.tiny));
+	}
+}
+
+
+function layerOV_onClick(event) 
+{
+	$("#hoverInfo").hide();
+	var graphic = event.graphic;
+	_languageID = graphic.attributes.getLanguageID();
+	$("#selectLanguage").val(_languageID);
+	changeState(STATE_SELECTION_OVERVIEW);
+	scrollToPage($.inArray($.grep($("#listThumbs").children("li"),function(n,i){return n.value == _languageID})[0], $("#listThumbs").children("li")));	
+}
+
+function createIconMarker(iconPath, spec) 
+{
+	return new esri.symbol.PictureMarkerSymbol(iconPath, spec.getWidth(), spec.getHeight()); 
+}
+
+function resizeSymbol(symbol, spec)
+{
+	return symbol.setWidth(spec.getWidth()).setHeight(spec.getHeight())	
+}
+
+function moveGraphicToFront(graphic)
+{
+	var dojoShape = graphic.getDojoShape();
+	if (dojoShape) dojoShape.moveToFront();
+}
+
+function hoverInfoPos(x,y){
+	if (x <= ($("#map").width())-230){
+		$("#hoverInfo").css("left",x+15);
+	}
+	else{
+		$("#hoverInfo").css("left",x-25-($("#hoverInfo").width()));
+	}
+	if (y >= ($("#hoverInfo").height())+50){
+		$("#hoverInfo").css("top",y-35-($("#hoverInfo").height()));
+	}
+	else{
+		$("#hoverInfo").css("top",y-15+($("#hoverInfo").height()));
+	}
+	$("#hoverInfo").show();
+}
+
+*/
+
 
 function handleWindowResize() {
 	if ((($("body").height() <= 500) || ($("body").width() <= 800)) || _isEmbed) $("#header").height(0);
