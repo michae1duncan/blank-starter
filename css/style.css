@@ -115,7 +115,7 @@ a:hover{
 }
 
 #map {
-	position:relative;
+	position:absolute; /* keep it absolute so it doesn't get knocked down to the next line in float:left situations */
 	border:none;
 	padding:0;
 	height:100%;
