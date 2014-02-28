@@ -88,10 +88,10 @@ function init() {
 		_map = response.map;
 
 		if(_map.loaded){
-			initMap();
+			finishInit();
 		} else {
 			dojo.connect(_map,"onLoad",function(){
-				initMap();
+				finishInit();
 			});
 		}
 				
@@ -99,7 +99,7 @@ function init() {
 	
 }
 
-function initMap() {
+function finishInit() {
 	
 	// if _homeExtent hasn't been set, then default to the initial extent
 	// of the web map.  On the other hand, if it HAS been set AND we're using
