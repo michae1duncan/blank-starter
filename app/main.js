@@ -1,5 +1,3 @@
-dojo.require("dijit.layout.BorderContainer");
-dojo.require("dijit.layout.ContentPane");
 dojo.require("esri.arcgis.utils");
 dojo.require("esri.map");
 
